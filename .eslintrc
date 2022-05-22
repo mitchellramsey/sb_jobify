@@ -25,6 +25,6 @@
     "no-plusplus": "off",
     "no-process-exit": "off",
     "class-methods-use-this": "off",
-    "import/extensions": "off",
+    "import/extensions": "off"
   }
 }
