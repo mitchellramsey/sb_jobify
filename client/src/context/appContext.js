@@ -6,7 +6,7 @@ import {
   REGISTER_USER_BEGIN,
   REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
-} from './actions';
+} from './constants';
 import reducer from './reducer';
 
 const token = localStorage.getItem('token');
