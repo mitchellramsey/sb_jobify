@@ -1,9 +1,11 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
-  REGISTER_USER_BEGIN,
-  REGISTER_USER_ERROR,
-  REGISTER_USER_SUCCESS,
+  LOGOUT_USER,
+  SETUP_USER_BEGIN,
+  SETUP_USER_ERROR,
+  SETUP_USER_SUCCESS,
+  TOGGLE_SIDEBAR,
 } from './constants';
 
 const reducer = (state, action) => {
@@ -22,12 +24,20 @@ const reducer = (state, action) => {
         alertType: '',
         alertText: '',
       };
-    case REGISTER_USER_BEGIN:
+    case LOGOUT_USER:
+      return {
+        ...state,
+        user: null,
+        token: null,
+        userLocation: '',
+        jobLocation: '',
+      };
+    case SETUP_USER_BEGIN:
       return {
         ...state,
         isLoading: true,
       };
-    case REGISTER_USER_ERROR:
+    case SETUP_USER_ERROR:
       return {
         ...state,
         isLoading: false,
@@ -35,7 +45,7 @@ const reducer = (state, action) => {
         alertType: action.payload.type,
         alertText: action.payload.message,
       };
-    case REGISTER_USER_SUCCESS:
+    case SETUP_USER_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -46,6 +56,11 @@ const reducer = (state, action) => {
         token: action.payload.token,
         userLocation: action.payload.location,
         jobLocation: action.payload.location,
+      };
+    case TOGGLE_SIDEBAR:
+      return {
+        ...state,
+        showSidebar: !state.showSidebar,
       };
     default:
       throw new Error(`no such action :${action.type}`);

@@ -21,7 +21,7 @@ const Landing = () => {
             flannel, fixie YOLO banjo scenester ennui street art selfies hexagon
             bespoke praxis you probably haven't heard of them woke.
           </p>
-          <Link to='/register' className='btn btn-hero'>
+          <Link to='/user-sign-in' className='btn btn-hero'>
             Login/Register
           </Link>
         </div>
