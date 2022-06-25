@@ -1,10 +1,68 @@
-import React from 'react';
+import { useState } from 'react';
+import { FormRow, Alert } from '../../components';
+import { useAppContext } from '../../context/appContext';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
 const Profile = () => {
+  const { user, showAlert, displayAlert, updateUser, isLoading } =
+    useAppContext();
+  const [name, setName] = useState(user?.name);
+  const [email, setEmail] = useState(user?.email);
+  const [lastName, setLastName] = useState(user?.lastName);
+  const [location, setLocation] = useState(user?.location);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !email || !lastName || !location) {
+      displayAlert({
+        type: 'danger',
+        message: 'Please provide all values!',
+      });
+      return;
+    }
+
+    updateUser({ name, email, lastName, location });
+  };
+
   return (
-    <div>
-      <h1>Profile</h1>
-    </div>
+    <Wrapper>
+      <form onSubmit={handleSubmit} className='form'>
+        <h3>Profile</h3>
+        {showAlert && <Alert />}
+
+        {/* {name} */}
+        <div className='form-center'>
+          <FormRow
+            type='text'
+            name='name'
+            value={name}
+            handleChange={(e) => setName(e.target.value)}
+          />
+          <FormRow
+            type='text'
+            name='lastName'
+            value={lastName}
+            handleChange={(e) => setLastName(e.target.value)}
+            labelText='Last Name'
+          />
+          <FormRow
+            type='email'
+            name='email'
+            value={email}
+            handleChange={(e) => setEmail(e.target.value)}
+          />
+          <FormRow
+            type='text'
+            name='location'
+            value={location}
+            handleChange={(e) => setLocation(e.target.value)}
+          />
+          <button className='btn btn-block' type='submit' disabled={isLoading}>
+            {isLoading ? 'Please Wait...' : 'Save Changes'}
+          </button>
+        </div>
+      </form>
+    </Wrapper>
   );
 };
 
