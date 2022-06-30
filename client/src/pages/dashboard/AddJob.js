@@ -2,9 +2,11 @@ import { FormRow, FormRowSelect, Alert } from '../../components';
 import {
   createJob,
   clearValues,
+  clearJobAlert,
   displayJobAlert,
   handleJobInput,
 } from '../../features/job/jobSlice';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
@@ -44,6 +46,14 @@ const AddJob = () => {
     const value = e.target.value;
     dispatch(handleJobInput({ name, value }));
   };
+
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        dispatch(clearJobAlert());
+      }, 3000);
+    }
+  }, [showAlert, dispatch]);
   return (
     <Wrapper>
       <form className='form'>

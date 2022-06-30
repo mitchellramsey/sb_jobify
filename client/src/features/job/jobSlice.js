@@ -98,6 +98,20 @@ const jobSlice = createSlice({
         [action.payload.name]: action.payload.value,
       };
     },
+    clearJobAlert: (state) => {
+      return {
+        ...state,
+        showAlert: false,
+        alertType: '',
+        alertText: '',
+      };
+    },
+    setEditJob: (state, action) => {
+      console.log(`set edit job: ${action.payload.id}`);
+    },
+    deleteJob: (state, action) => {
+      console.log(`delete : ${action.payload.id}`);
+    },
   },
   extraReducers: {
     [createJob.pending]: (state) => {
@@ -151,6 +165,12 @@ const jobSlice = createSlice({
   },
 });
 
-export const { clearValues, displayJobAlert, handleJobInput } =
-  jobSlice.actions;
+export const {
+  clearValues,
+  clearJobAlert,
+  deleteJob,
+  displayJobAlert,
+  handleJobInput,
+  setEditJob,
+} = jobSlice.actions;
 export default jobSlice.reducer;
