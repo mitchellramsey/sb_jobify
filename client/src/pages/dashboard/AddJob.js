@@ -1,14 +1,17 @@
 import { FormRow, FormRowSelect, Alert } from '../../components';
-import { useAppContext } from '../../context/appContext';
+import {
+  createJob,
+  clearValues,
+  displayJobAlert,
+  handleJobInput,
+} from '../../features/job/jobSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
 const AddJob = () => {
+  const dispatch = useDispatch();
   const {
-    clearValues,
     company,
-    createJob,
-    displayAlert,
-    handleChange,
     isEditing,
     jobLocation,
     jobType,
@@ -17,27 +20,29 @@ const AddJob = () => {
     showAlert,
     status,
     statusOptions,
-  } = useAppContext();
+  } = useSelector((state) => state.job);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!position || !company || !jobLocation) {
-      displayAlert({
-        type: 'danger',
-        message: 'Please provide all values',
-      });
+      dispatch(
+        displayJobAlert({
+          type: 'danger',
+          message: 'Please provide all values',
+        })
+      );
     }
     if (isEditing) {
       return;
     }
-    createJob();
+    dispatch(createJob());
   };
 
-  const handleJobInput = (e) => {
+  const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    handleChange({ name, value });
+    dispatch(handleJobInput({ name, value }));
   };
   return (
     <Wrapper>
@@ -50,32 +55,32 @@ const AddJob = () => {
             type='text'
             name='position'
             value={position}
-            handleChange={handleJobInput}
+            handleChange={handleChange}
           />
           <FormRow
             type='text'
             name='company'
             value={company}
-            handleChange={handleJobInput}
+            handleChange={handleChange}
           />
           <FormRow
             type='text'
             labelText='location'
             name='jobLocation'
             value={jobLocation}
-            handleChange={handleJobInput}
+            handleChange={handleChange}
           />
           <FormRowSelect
             name='status'
             value={status}
-            handleChange={handleJobInput}
+            handleChange={handleChange}
             list={statusOptions}
           />
           <FormRowSelect
             labelText='type'
             name='jobType'
             value={jobType}
-            handleChange={handleJobInput}
+            handleChange={handleChange}
             list={jobTypeOptions}
           />
           <div className='btn-container'>
@@ -90,7 +95,7 @@ const AddJob = () => {
               className='btn btn-block clear-btn'
               onClick={(e) => {
                 e.preventDefault();
-                clearValues();
+                dispatch(clearValues());
               }}
             >
               Clear

@@ -1,10 +1,10 @@
 import Wrapper from '../assets/wrappers/BigSidebar';
-import { useAppContext } from '../context/appContext';
+import { useSelector } from 'react-redux';
 import NavLinks from './NavLinks';
 import Logo from './Logo';
 
 const BigSidebar = () => {
-  const { showSidebar } = useAppContext();
+  const { showSidebar } = useSelector((store) => store.user);
   return (
     <Wrapper>
       <div
