@@ -21,6 +21,11 @@ const initialState = {
   status: 'Applied',
   statusOptions: ['Interviewing', 'Declined', 'Applied', 'Accepted'],
   totalJobs: 0,
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
 
 export const createJob = createAsyncThunk(
@@ -51,23 +56,33 @@ export const createJob = createAsyncThunk(
   }
 );
 
-export const getJobs = createAsyncThunk('job/getJobs', async () => {
-  try {
-    const authFetch = authFetchCreator();
-    const { data } = await authFetch('/jobs');
-    const { jobs, totalJobs, numOfPages } = data;
-    return {
-      jobs,
-      totalJobs,
-      numOfPages,
-    };
-  } catch (error) {
-    return {
-      type: 'danger',
-      message: error.response.data.msg,
-    };
+export const getJobs = createAsyncThunk(
+  'job/getJobs',
+  async (arg, { getState, dispatch }) => {
+    try {
+      const { job } = getState();
+      const { page, search, searchStatus, searchType, sort } = job;
+      let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+      if (search) {
+        url = url + `&search=${search}`;
+      }
+      const authFetch = authFetchCreator();
+      const { data } = await authFetch(url);
+      const { jobs, totalJobs, numOfPages } = data;
+      return {
+        jobs,
+        totalJobs,
+        numOfPages,
+      };
+    } catch (error) {
+      dispatch(logoutUser());
+      return {
+        type: 'danger',
+        message: error.response.data.msg,
+      };
+    }
   }
-});
+);
 
 export const deleteJob = createAsyncThunk(
   'job/deleteJob',
@@ -77,7 +92,7 @@ export const deleteJob = createAsyncThunk(
       await authFetch.delete(`/jobs/${jobId}`);
       dispatch(getJobs());
     } catch (error) {
-      logoutUser();
+      dispatch(logoutUser());
     }
   }
 );
@@ -116,6 +131,22 @@ const jobSlice = createSlice({
   name: 'job',
   initialState,
   reducers: {
+    changePage: (state, action) => {
+      console.log(action);
+      return {
+        ...state,
+        page: action.payload,
+      };
+    },
+    clearFilters: (state) => {
+      return {
+        ...state,
+        search: '',
+        searchStatus: 'all',
+        searchType: 'all',
+        sort: 'latest',
+      };
+    },
     clearValues: (state) => {
       return {
         ...state,
@@ -139,6 +170,7 @@ const jobSlice = createSlice({
     handleJobInput: (state, action) => {
       return {
         ...state,
+        page: 1,
         [action.payload.name]: action.payload.value,
       };
     },
@@ -248,6 +280,8 @@ const jobSlice = createSlice({
 });
 
 export const {
+  changePage,
+  clearFilters,
   clearValues,
   clearJobAlert,
   displayJobAlert,
