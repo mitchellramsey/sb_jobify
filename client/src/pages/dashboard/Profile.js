@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormRow, Alert } from '../../components';
-import { useAppContext } from '../../context/appContext';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  displayUserAlert,
+  updateUser,
+  clearUserAlert,
+} from '../../features/user/userSlice';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, updateUser, isLoading } =
-    useAppContext();
+  const { user, showAlert, isLoading } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
@@ -14,15 +19,25 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !email || !lastName || !location) {
-      displayAlert({
-        type: 'danger',
-        message: 'Please provide all values!',
-      });
+      dispatch(
+        displayUserAlert({
+          type: 'danger',
+          message: 'Please provide all values!',
+        })
+      );
       return;
     }
 
-    updateUser({ name, email, lastName, location });
+    dispatch(updateUser({ name, email, lastName, location }));
   };
+
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        dispatch(clearUserAlert());
+      }, 3000);
+    }
+  }, [showAlert, dispatch]);
 
   return (
     <Wrapper>
@@ -33,6 +48,7 @@ const Profile = () => {
         {/* {name} */}
         <div className='form-center'>
           <FormRow
+            labelText='First Name'
             type='text'
             name='name'
             value={name}

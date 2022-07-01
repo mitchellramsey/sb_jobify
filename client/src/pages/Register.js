@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  displayUserAlert,
+  clearUserAlert,
+  setupUser,
+} from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { Alert, FormRow, Logo } from '../components';
-import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/RegisterPage';
 
 const initialState = {
@@ -12,10 +17,10 @@ const initialState = {
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const { user, isLoading, showAlert } = useSelector((store) => store.user);
   const [values, setValues] = useState(initialState);
   const navigate = useNavigate();
-  const { user, isLoading, showAlert, displayAlert, clearAlert, setupUser } =
-    useAppContext();
 
   const handleChange = (e) => {
     setValues({
@@ -23,31 +28,36 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    if (showAlert) clearAlert();
+    if (showAlert) dispatch(clearUserAlert());
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
-      displayAlert({
-        type: 'danger',
-        message: 'Please provide all values!',
-      });
+      dispatch(
+        displayUserAlert({
+          type: 'danger',
+          message: 'Please provide all values!',
+        })
+      );
       return;
     }
     const currentUser = { name, email, password };
     if (isMember) {
-      setupUser({
-        currentUser,
-        endPoint: 'login',
-        alertText: 'Login Successful! Redirecting...',
-      });
+      dispatch(
+        setupUser({
+          currentUser,
+          endPoint: 'login',
+          alertText: 'Login Successful! Redirecting...',
+        })
+      );
     } else {
-      setupUser({
-        currentUser,
-        endPoint: 'register',
-        alertText: 'User Created! Redirecting...',
-      });
+      dispatch(
+        setupUser({
+          currentUser,
+          endPoint: 'register',
+          alertText: 'User Created! Redirecting...',
+        })
+      );
     }
   };
 
@@ -62,6 +72,14 @@ const Register = () => {
       }, 3000);
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        dispatch(clearUserAlert());
+      }, 3000);
+    }
+  }, [showAlert, dispatch]);
 
   return (
     <Wrapper className='full-page'>

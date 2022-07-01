@@ -41,17 +41,21 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
-  .pending {
+  .Applied {
     background: #fcefc7;
     color: #e9b949;
   }
-  .interview {
+  .Interviewing {
     background: #e0e8f9;
     color: #647acb;
   }
-  .declined {
+  .Declined {
     color: #d66a6a;
     background: #ffeeee;
+  }
+  .Accepted {
+    color: #38761d;
+    background: #d9ead3;
   }
   .content {
     padding: 1rem 1.5rem;
