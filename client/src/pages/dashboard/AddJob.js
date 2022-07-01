@@ -7,6 +7,7 @@ import {
   handleJobInput,
 } from '../../features/job/jobSlice';
 import { useEffect } from 'react';
+import { editJob } from '../../features/job/jobSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
@@ -36,6 +37,7 @@ const AddJob = () => {
       );
     }
     if (isEditing) {
+      dispatch(editJob());
       return;
     }
     dispatch(createJob());
