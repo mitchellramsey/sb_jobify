@@ -190,19 +190,10 @@ Build and Running Prod
 * [ ] Build reset password functionality
 * [ ] Verify email functionality
 
-
-<!-- Contributing -->
-## :wave: Contributing
-
-<a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Louis3797/awesome-readme-template" />
-</a>
-
-
 <!-- Contact -->
 ## :handshake: Contact
 
-Mitchell Ramsey - [LinkedIn](https://www.linkedin.com/in/mitchell-ramsey-clt/) - email@email_client.com
+Mitchell Ramsey - [LinkedIn](https://www.linkedin.com/in/mitchell-ramsey-clt/) - mitchell.ramsey.clt@gmail.ocm
 
 Project Link: [https://github.com/mitchellramsey/sb_jobify](https://github.com/mitchellramsey/sb_jobify)
 
@@ -213,4 +204,4 @@ Project Link: [https://github.com/mitchellramsey/sb_jobify](https://github.com/m
 A big shoutout to the following for guiding me on completing this project and teaching me so much along the way!
 
  - [John Smilga](https://www.udemy.com/course/mern-stack-course-mongodb-express-react-and-nodejs/learn/lecture/30247614#overview)
- - [Readme Template](https://github.com/Louis3797/awesome-readme-template)
+ - [Louis3797](https://github.com/Louis3797/awesome-readme-template)
